@@ -8,5 +8,6 @@ export interface Task {
 }
 
 export interface ToDoListProps {
+  taskList: Task[]; 
   variant?: "default" | "compact";
 }

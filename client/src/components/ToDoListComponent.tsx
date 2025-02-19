@@ -23,9 +23,10 @@ import { ToDoListProps } from "../types/ToDoListTypes";
 import sleepingPenguin from "../assets/sleeping_penguin2.gif"
 import React from "react";
 
-const ToDoListComponent: React.FC<ToDoListProps> = ({
+const ToDoListComponent = ({
+  taskList = [], 
   variant = "default",
-}) => {
+}:ToDoListProps) => {
   const [date, setDate] = useState<string>("mm/dd/yyyy");  // Creates Date
   const [time, setTime] = useState<string>("--:-- --");  // Creates Time
   const [task, setTask] = useState<string>("");   // Creates Task
@@ -81,6 +82,9 @@ const ToDoListComponent: React.FC<ToDoListProps> = ({
     toggleCompleteTask,
   } = useToDoList();
 
+  useEffect(() => {
+    setTasks(taskList);
+  }, [taskList, setTasks]);
   // Automatically updates task
   const updateTasks = useCallback(() => {
     setTasks((prevTasks) =>

@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { UserData } from '../AvatarModal';
 
 interface SettingPageModalProps {
   onClose: () => void;
   fetchUserData: () => void; // Add fetchUserData as a prop
+  user?: UserData;
 }
 
-const SettingPageModal: React.FC<SettingPageModalProps> = ({ onClose, fetchUserData }) => {
+const SettingPageModal = ({ onClose, fetchUserData }: SettingPageModalProps) => {
   const [password, setPassword] = useState<string>(''); 
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // Added confirm password state
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
   const [email, setEmail] = useState<string>(''); 
   const [username, setUserName] = useState<string>(''); 
-  const [initialPassword, setInitialPassword] = useState<string>(''); // Store the initial password
+  const [initialPassword, setInitialPassword] = useState<string>(''); 
   const token = localStorage.getItem('token');
   const [passwordMatchError, setPasswordMatchError] = useState<string>(''); 
-  const [emailMatchError, setEmailMatchError] = useState<string>(''); // For password mismatch error
-  const [isEditing, setIsEditing] = useState<boolean>(false); // Track whether the user is editing their profile
+  const [emailMatchError, setEmailMatchError] = useState<string>(''); 
+  const [isEditing, setIsEditing] = useState<boolean>(false); 
   const [loading, setLoading] = useState<boolean>(false);
   const [afterLoading, setafterLoading] = useState<boolean>(false);
   const [confirmPW, setConfirmPW] = useState<boolean>(false)

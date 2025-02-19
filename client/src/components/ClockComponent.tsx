@@ -1,69 +1,74 @@
 import React, { useEffect, useState } from "react";
 
-const Clock: React.FC = () => {
+interface ClockProps {
+  size?: "small" | "medium" | "large";
+  darkMode?: boolean;
+}
+
+const Clock: React.FC<ClockProps> = ({ size = "medium", darkMode = false }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Update time every second
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
-  // Extract parts of the time and date
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const day = days[time.getDay()];
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
   const seconds = time.getSeconds().toString().padStart(2, "0");
 
+  // Dynamic styles based on props
+  const sizeClasses = {
+    small: "text-xl px-4 py-2",
+    medium: "text-2xl px-6 py-3",
+    large: "text-4xl px-8 py-4",
+  };
+
+  const textColor = darkMode ? "text-white" : "text-[#354F52]";
+  const bgColor = darkMode ? "bg-gray-800" : "bg-white";
+  const dividerColor = darkMode ? "bg-white" : "bg-[#354F52]";
+
   return (
-    <div className="ml-[54rem] mt-[-4em] flex">
+    <div className="flex justify-center items-center">
       <div
+        className={`flex items-center rounded-lg shadow-md ${bgColor} ${textColor} ${sizeClasses[size]}`}
         style={{ fontFamily: '"Crimson Pro", serif' }}
-        className="mt-[1rem] flex items-center rounded-lg px-8 py-4 text-[#354F52]"
       >
         {/* Day */}
         <div className="mx-4 text-center">
-          <div className="text-4xl">{day}</div>
+          <div>{day}</div>
           <div className="mt-1 text-sm uppercase">Day</div>
         </div>
 
         {/* Divider */}
-        <div
-          className="mx-4 h-12 w-0.5 bg-white"
-          style={{ backgroundColor: "#354F52" }}
-        ></div>
+        <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
         {/* Hours */}
         <div className="mx-4 text-center">
-          <div className="text-4xl">{hours}</div>
+          <div>{hours}</div>
           <div className="mt-1 text-sm uppercase">Hours</div>
         </div>
 
         {/* Divider */}
-        <div
-          className="mx-4 h-12 w-0.5"
-          style={{ backgroundColor: "#354F52" }}
-        ></div>
+        <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
         {/* Minutes */}
         <div className="mx-4 text-center">
-          <div className="text-4xl">{minutes}</div>
+          <div>{minutes}</div>
           <div className="mt-1 text-sm uppercase">Minutes</div>
         </div>
 
         {/* Divider */}
-        <div
-          className="mx-4 h-12 w-0.5 bg-white"
-          style={{ backgroundColor: "#354F52" }}
-        ></div>
+        <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
         {/* Seconds */}
         <div className="mx-4 text-center">
-          <div className="text-4xl">{seconds}</div>
+          <div>{seconds}</div>
           <div className="mt-1 text-sm uppercase">Seconds</div>
         </div>
       </div>

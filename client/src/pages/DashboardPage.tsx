@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "../components/AvatarModal";
 import SideBar from "../components/SideBar";
 import WhiteContainer from "../components/WhiteContainer";
 import Pets from "../components/dashboard/Pets";
 import ToDoListComponent from "../components/ToDoListComponent";
 import DeckProgress from "../components/dashboard/DeckProgress";
+import { Task } from "../types/ToDoListTypes";
 
-const DashboardPage = () => {
+interface DashboardPageProps {
+  tasks?: Task[];  
+}
+
+const DashboardPage = ({
+  tasks = [], 
+}: DashboardPageProps) => {
   const [setPetData] = useState<any>(null);
 
   const handlePetAdded = (pet: any) => {
@@ -31,7 +38,7 @@ const DashboardPage = () => {
           {/* Column for My Task and Progress */}
           <div className="flex flex-col lg:grid lg:grid-rows-[auto_auto] lg:gap-6">
             <div className="w-full h-[21.5rem] bg-white rounded-[1.5rem] shadow-lg">
-              <ToDoListComponent variant="compact" />
+              <ToDoListComponent variant="compact" taskList={tasks}/>
             </div>
             <div
               style={{ fontFamily: '"Signika Negative", sans-serif' }}
