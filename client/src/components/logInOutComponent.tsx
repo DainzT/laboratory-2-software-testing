@@ -2,11 +2,12 @@ import loading from '../assets/Petuon_loading_.gif';
 
 interface LogInOutProps {
     message?: string
-    size?: number
+    size?: "small" | "medium" | "large"
     backgroundColor?: string
 }
 
-const LogInOut = ({message, size, backgroundColor }: LogInOutProps) => {
+const LogInOut = ({message, size = "medium", backgroundColor }: LogInOutProps) => {
+    const scale = size === "small" ? 100 : size === "medium" ? 200 : 300;
     return (
         <div 
             className="loading-overlay"
@@ -19,7 +20,7 @@ const LogInOut = ({message, size, backgroundColor }: LogInOutProps) => {
             alt="Loading..."
             className="loading-gif"
             style={{
-                width: size, height: size
+                width: scale, height: scale
             }}
             />
             {message &&  <p className='absolute text-white mt-[10rem]'>{message}</p>}
