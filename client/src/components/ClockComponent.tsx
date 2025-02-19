@@ -5,7 +5,7 @@ interface ClockProps {
   darkMode?: boolean;
 }
 
-const Clock: React.FC<ClockProps> = ({ size = "medium", darkMode = false }) => {
+const Clock: React.FC<ClockProps> = ({ size = "small", darkMode = false }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -22,7 +22,6 @@ const Clock: React.FC<ClockProps> = ({ size = "medium", darkMode = false }) => {
   const minutes = time.getMinutes().toString().padStart(2, "0");
   const seconds = time.getSeconds().toString().padStart(2, "0");
 
-  // Dynamic styles based on props
   const sizeClasses = {
     small: "text-xl px-4 py-2",
     medium: "text-2xl px-6 py-3",
@@ -39,34 +38,27 @@ const Clock: React.FC<ClockProps> = ({ size = "medium", darkMode = false }) => {
         className={`flex items-center rounded-lg shadow-md ${bgColor} ${textColor} ${sizeClasses[size]}`}
         style={{ fontFamily: '"Crimson Pro", serif' }}
       >
-        {/* Day */}
         <div className="mx-4 text-center">
           <div>{day}</div>
           <div className="mt-1 text-sm uppercase">Day</div>
         </div>
 
-        {/* Divider */}
         <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
-        {/* Hours */}
         <div className="mx-4 text-center">
           <div>{hours}</div>
           <div className="mt-1 text-sm uppercase">Hours</div>
         </div>
 
-        {/* Divider */}
         <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
-        {/* Minutes */}
         <div className="mx-4 text-center">
           <div>{minutes}</div>
           <div className="mt-1 text-sm uppercase">Minutes</div>
         </div>
 
-        {/* Divider */}
         <div className={`mx-4 h-12 w-0.5 ${dividerColor}`} />
 
-        {/* Seconds */}
         <div className="mx-4 text-center">
           <div>{seconds}</div>
           <div className="mt-1 text-sm uppercase">Seconds</div>

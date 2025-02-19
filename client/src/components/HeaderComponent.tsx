@@ -1,8 +1,8 @@
 import React from "react";
 
 interface HeaderComponentProps {
-  currentPage: ("landing" | "about" | "team" | "contact")[];
-  setCurrentPage?: (page: "landing" | "about" | "team" | "contact") => void;
+  currentPage: ("home" | "about" | "team" | "contact")[];
+  setCurrentPage?: (page: "home" | "about" | "team" | "contact") => void;
   user?: { name: string } | null;
   darkMode?: boolean;
 }
@@ -25,17 +25,17 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       className={`absolute flex w-full items-center justify-between px-6 py-4 md:px-12 lg:px-16 xl:px-20 xl:h-24 transition-all duration-300 shadow-md ${bgColor}`}
     >
       <nav className="flex space-x-4 md:space-x-8 lg:space-x-12 xl:space-x-16">
-        {["landing", "about", "team", "contact"].map(
+        {["home", "about", "team", "contact"].map(
           (page) =>
             currentPage.includes(
-              page as "landing" | "about" | "team" | "contact"
+              page as "home" | "about" | "team" | "contact"
             ) && (
               <button
                 key={page}
-                onClick={() => setCurrentPage?.(page as "landing" | "about" | "team" | "contact")}
+                onClick={() => setCurrentPage?.(page as "home" | "about" | "team" | "contact")}
                 className={`px-4 py-2 ${buttonBg} ${buttonText} rounded-lg shadow-md transition-all duration-200 ${hoverBg} ${activeBg} border border-gray-300 font-medium text-lg md:text-xl lg:text-2xl xl:text-xl ${
                   currentPage.includes(
-                    page as "landing" | "about" | "team" | "contact"
+                    page as "home" | "about" | "team" | "contact"
                   )
                     ? "underline"
                     : ""
