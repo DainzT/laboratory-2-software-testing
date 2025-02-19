@@ -7,19 +7,33 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-
+  argTypes: {
+    size: {
+      control: { type: 'select', options: ['small', 'medium', 'large'] },
+    },
+    backgroundColor: { control: 'color' },
+    message: { control: 'text' },
+  },
 } satisfies Meta<typeof LogInOut>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
  
 export const Default: Story = {
-  render: () => <LogInOut />
+  args: {
+    size: 'medium',
+  }
+}
+
+export const Small: Story = {
+  args: {
+    size: 'small',
+  }
 }
 
 export const Large: Story = {
   args: {
-    size: 400,
+    size: 'large',
   }
 }
 
