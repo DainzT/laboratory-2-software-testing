@@ -123,7 +123,7 @@ export const WithNoTasks: Story = {
   },
 };
 
-export const MoreTasks: Story = {
+export const overFlowTasks: Story = {
   parameters: {
     viewport: { defaultViewport: 'responsive' },
   },
