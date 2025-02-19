@@ -32,26 +32,35 @@ const Avatar = ({ user: propUser, onClick }: AvatarProps) => {
     }
   };
 
+  const fetchUserData = async () => {
+    if (!token) {
+      console.warn("No token found, skipping user data fetch.");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/avatar/getUser`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data) {
+        setFetchedUser({ name: response.data.user_name, email: response.data.user_email });
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   useEffect(() => {
-    if (!propUser) {
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/avatar/getUser`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setFetchedUser({ name: response.data.user_name, email: response.data.user_email });
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      };
+    if (!propUser && !fetchedUser) {
       fetchUserData();
     }
-  }, [token, propUser]);
+  }, [propUser]); 
 
   const user = propUser || fetchedUser || { name: "", email: "" };
 
   const handleLogout = async () => {
-    setLoading(true); // Start loading animation
+    setLoading(true); 
     try {
       // Simulate an async operation (e.g., API request)
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -101,7 +110,7 @@ const Avatar = ({ user: propUser, onClick }: AvatarProps) => {
           {openSettings && 
              <SettingPageModal
                 onClose={() => setOpenSettings(false)}
-                fetchUserData={() => {}}
+                fetchUserData={fetchUserData}
               />
           } 
           {isDropdownOpen && (
