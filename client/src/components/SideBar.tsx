@@ -11,17 +11,13 @@ import logo from "../assets/petuon_logo.png";
 import background from "../assets/BG.png";
 
 const Sidebar: React.FC = () => {
-  // Ginakuha ang location (kung diin ka na nga page) gamit ang useLocation para sa highlight sa sidebar
   const location = useLocation();
-
-  // Muni nga function nagacheck kung pareho bala ang current nga path sa ginaklik nga link
   const isActive = (path: string) => {
-    return location.pathname === path; // Kung ang path pareho sa current nga page, nagabalik siya sang true
+    return location.pathname === path;
   };
 
   return (
     <div>
-      {/* Desktop Sidebar */}
       <div
         className="fixed bottom-0 hidden h-screen w-screen flex-col bg-cover bg-center bg-no-repeat lg:flex"
         style={{ backgroundImage: `url(${background})` }}
@@ -60,7 +56,6 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation */}
       <div
         className="fixed bottom-0 left-0 z-10 flex h-20 w-full items-center justify-around rounded-t-3xl bg-[#354F52] py-2 shadow-md md:px-8 lg:hidden"
         style={{ backgroundImage: `url(${background})` }}
