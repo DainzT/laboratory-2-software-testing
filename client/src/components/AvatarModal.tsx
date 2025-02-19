@@ -5,43 +5,62 @@ import { useNavigate } from 'react-router-dom';
 import LogInOut from "./logInOutComponent";
 import { toast, ToastContainer } from "react-toastify";
 import SettingPageModal from "./avatar/SettingsModal";
+import DropdownMenu from "./avatar/DropDownMenu"
 
-const Avatar = () => {
+export interface UserData {
+  name: string;
+  email: string;
+}
+interface AvatarProps {
+  user?: UserData;
+  onClick?: () => void;
+}
+
+const Avatar = ({ user: propUser, onClick }: AvatarProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [userName, setUserName] = useState<string>("")
-  const [userEmail, setUserEmail] = useState<string>("")
+  const [fetchedUser, setFetchedUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(false);
   const [openSettings, setOpenSettings] = useState<boolean>(false);
 
   const token = localStorage.getItem('token');
   const navigate = useNavigate(); 
 
-  // Toggle dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+    if (onClick) {
+      onClick(); 
+    }
   };
 
   const fetchUserData = async () => {
+    if (!token) {
+      console.warn("No token found, skipping user data fetch.");
+      return;
+    }
+
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/avatar/getUser`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      const userData = response.data;
-      setUserName(userData.user_name);
-      setUserEmail(userData.user_email);
+
+      if (response.data) {
+        setFetchedUser({ name: response.data.user_name, email: response.data.user_email });
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
   useEffect(() => {
-    fetchUserData(); // Call fetchUserData on component mount
-  }, [token]);
+    if (!propUser && !fetchedUser) {
+      fetchUserData();
+    }
+  }, [propUser]); 
+
+  const user = propUser || fetchedUser || { name: "", email: "" };
 
   const handleLogout = async () => {
-    setLoading(true); // Start loading animation
+    setLoading(true); 
     try {
       // Simulate an async operation (e.g., API request)
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -81,79 +100,21 @@ const Avatar = () => {
       xl:right-12 xl:top-9
       items-center space-x-4 lg:flex z-50"
       >
-        {/* Bell Icon */}
-     
-        {/* Profile Icon with Dropdown */}
-        <div className="relative">
-          {/* Profile Icon (clickable) */}
+      <div className="relative">
           <button
             onClick={toggleDropdown}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300"
           >
             <User className="h-7 w-7 text-[#354F52]" />
           </button>
-          {openSettings && (
-            <>
+          {openSettings && 
              <SettingPageModal
                 onClose={() => setOpenSettings(false)}
                 fetchUserData={fetchUserData}
               />
-            </>
-          )} 
-          {/* Dropdown Menu */}
+          } 
           {isDropdownOpen && (
-            <div className="
-            absolute
-            right-0 top-12 
-            w-56 
-            rounded-lg border bg-white shadow-lg
-            ">
-              {/* Profile Section */}
-              <div className="flex items-center border-b p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-[#354F52]">
-                  <User className="h-6 w-6" />
-                </div>
-                <div className="ml-3">
-
-                  <p className="font-medium text-gray-800">{userName}</p>
-                        <p className="text-sm text-gray-500 cursor-pointer" title={userEmail} >
-                      {userEmail.length > 5 ? `${userEmail.substring(0, 5)}...@gmail.com` : userEmail}
-                      </p>
-
-                </div>
-              </div>
-              {/* Dropdown Options */}
-              <ul className="py-2">
-                <li className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
-                onClick={() => setOpenSettings(true)}
-                >
-                  <Settings className="mr-2 h-5 w-5 text-gray-700" />
-                  Settings
-                </li>
-                <li className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100">
-                  <Moon className="mr-2 h-5 w-5 text-gray-700" />
-                  Darkmode
-                </li>
-              </ul>
-              {/* Footer Options */}
-              <ul className="border-t">
-                {/* Logout Option */}
-                <li
-                  className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                  onClick={handleLogout} 
-                >
-                  Log out
-                </li>
-              </ul>
-              <ul className="border-t">
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
-                  Privacy Policy
-                </li>
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
-                  Help and Feedback
-                </li>
-              </ul>
-            </div>
+           <DropdownMenu user={user} onSettingsClick={() => setOpenSettings(true)} onLogout={handleLogout} />
           )}
         </div>
       </div>
