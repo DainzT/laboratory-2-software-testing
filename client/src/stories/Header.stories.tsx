@@ -16,6 +16,10 @@ const meta: Meta<typeof HeaderComponent> = {
     user: {
       control: "object",
     },
+    darkMode: {
+        control: "boolean",
+        description: "Toggles dark mode.",
+      },
   },
 };
 
@@ -43,3 +47,19 @@ export const LoggedOut: Story = {
     user: null,
   },
 };
+
+export const DarkModeLoggedIn: Story = {
+    args: {
+      currentPage: ["landing", "about", "team", "contact"],
+      user: { name: "Jane Doe" },
+      darkMode: true,
+    },
+  };
+
+export const DarkModeLoggedOut: Story = {
+    args: {
+      currentPage: ["landing", "about", "team", "contact"],
+      user: null,
+      darkMode: true,
+    },
+  };

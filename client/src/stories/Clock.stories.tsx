@@ -24,26 +24,22 @@ const meta: Meta<typeof Clock> = {
 export default meta;
 type Story = StoryObj<typeof Clock>;
 
-// Default Clock
 export const Default: Story = {
   args: {},
 };
 
-// Small Clock
 export const Small: Story = {
   args: {
     size: "small",
   },
 };
 
-// Large Clock
 export const Large: Story = {
   args: {
     size: "large",
   },
 };
 
-// Dark Mode Clock
 export const DarkMode: Story = {
   args: {
     darkMode: true,
