@@ -26,7 +26,6 @@ export const Default: Story = {
     args: {
         onClick: action("Avatar clicked"),
      },
-     render: () => <Avatar />
 };
 
 export const OpenDropdown: Story = {
